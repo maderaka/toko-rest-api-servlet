@@ -48,9 +48,9 @@ abstract class AbstractController extends HttpServlet{
      */
     public void responseJson(Object data){
         String json = this.getGson().toJson(data);
+        this.response.setContentType("application/json");
         try {
             PrintWriter writer = this.response.getWriter();
-            writer.format("application/json");
             writer.write(json);
             writer.flush();
         }catch (IOException e){
