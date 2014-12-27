@@ -2,8 +2,10 @@ package com.kodepelangi.app;
 
 import com.kodepelangi.model.dao.RoleInterface;
 import com.kodepelangi.model.dao.UserDaoInterface;
+import com.kodepelangi.model.dao.UserRoleInterface;
 import com.kodepelangi.model.dao.impl.RoleDao;
 import com.kodepelangi.model.dao.impl.UserDao;
+import com.kodepelangi.model.dao.impl.UserRoleDao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -57,5 +59,14 @@ public class DaoFactory {
     public RoleInterface getRoleDao(){
         RoleInterface roleDao = new RoleDao(this.conn);
         return roleDao;
+    }
+
+    /**
+     *
+     * @return UserRoleInterface
+     */
+    public UserRoleInterface getUserRoleDao(){
+        UserRoleInterface userRoleDao = new UserRoleDao(this.conn);
+        return userRoleDao;
     }
 }

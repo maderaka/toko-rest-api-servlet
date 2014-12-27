@@ -6,6 +6,7 @@ import java.util.Date;
  * @author rakateja on 12/27/14.
  */
 public class UserRole {
+    private int id;
     private User user;
     private Role role;
     private Date createdAt;
@@ -37,5 +38,13 @@ public class UserRole {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

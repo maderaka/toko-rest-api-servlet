@@ -9,11 +9,17 @@ import java.util.List;
  */
 public interface UserRoleInterface {
 
+    static final String TABLE_NAME = "user_has_role";
+
     public int create(UserRole userRole);
 
     public boolean delete(int id);
 
     public boolean update(UserRole userRole);
 
-    public List<UserRole> findAllByUser(int idUser);
+    public UserRole findById(int id);
+
+    public List<UserRole> findByUser(int idUser);
+
+    public List<UserRole> findByRole(int idRole);
 }
