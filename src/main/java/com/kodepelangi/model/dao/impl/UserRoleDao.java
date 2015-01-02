@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.*;
 
 /**
- * @author rakateja on 12/27/14.
+ * @author Raka Teja<rakatejaa@gmail.com>
  */
 public class UserRoleDao implements UserRoleInterface {
 
@@ -15,10 +15,19 @@ public class UserRoleDao implements UserRoleInterface {
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
+    /**
+     *
+     * @param conn Connection
+     */
     public UserRoleDao(Connection conn){
         this.conn = conn;
     }
 
+    /**
+     *
+     * @param userRole UserRole
+     * @return
+     */
     @Override
     public int create(UserRole userRole) {
         int idLastCreated = 0;
@@ -40,6 +49,11 @@ public class UserRoleDao implements UserRoleInterface {
         return idLastCreated;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public boolean delete(int id) {
         try {
@@ -52,6 +66,11 @@ public class UserRoleDao implements UserRoleInterface {
         return false;
     }
 
+    /**
+     *
+     * @param userRole UserRole
+     * @return
+     */
     @Override
     public boolean update(UserRole userRole) {
         try {
@@ -67,6 +86,11 @@ public class UserRoleDao implements UserRoleInterface {
         return false;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @Override
     public UserRole findById(int id) {
         UserRole uR = new UserRole();
@@ -75,10 +99,12 @@ public class UserRoleDao implements UserRoleInterface {
             this.preparedStatement.setInt(1,id);
             this.resultSet = this.preparedStatement.executeQuery();
             if(this.resultSet.next()){
-                uR.setId(this.resultSet.getInt("id"));
+
                 uR.getUser().setId(this.resultSet.getInt("user_id"));
-                uR.getRole().setId(this.resultSet.getInt("role_id"));
-                uR.setCreatedAt(new java.util.Date(this.resultSet.getDate("created_at").getTime()));
+                uR.getRole().setId(this.resultSet.getInt("roles_id"));
+                if(this.resultSet.getDate("created_at") != null){
+                    uR.setCreatedAt(new java.util.Date(this.resultSet.getDate("created_at").getTime()));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -87,6 +113,11 @@ public class UserRoleDao implements UserRoleInterface {
         return uR;
     }
 
+    /**
+     *
+     * @param idUser int
+     * @return
+     */
     @Override
     public List<UserRole> findByUser(int idUser) {
         List<UserRole> list = new ArrayList<>();
@@ -96,10 +127,11 @@ public class UserRoleDao implements UserRoleInterface {
             this.resultSet = this.preparedStatement.executeQuery();
             while(this.resultSet.next()){
                 UserRole userRole = new UserRole();
-                userRole.setId(this.resultSet.getInt("id"));
                 userRole.getUser().setId(this.resultSet.getInt("user_id"));
-                userRole.getRole().setId(this.resultSet.getInt("role_id"));
-                userRole.setCreatedAt(new java.util.Date(this.resultSet.getDate("created_at").getTime()));
+                userRole.getRole().setId(this.resultSet.getInt("roles_id"));
+                if(this.resultSet.getDate("created_at") != null){
+                    userRole.setCreatedAt(new java.util.Date(this.resultSet.getDate("created_at").getTime()));
+                }
                 list.add(userRole);
             }
 
@@ -109,6 +141,11 @@ public class UserRoleDao implements UserRoleInterface {
         return list;
     }
 
+    /**
+     *
+     * @param idRole int
+     * @return
+     */
     @Override
     public List<UserRole> findByRole(int idRole) {
         List<UserRole> list = new ArrayList<>();
@@ -118,10 +155,13 @@ public class UserRoleDao implements UserRoleInterface {
             this.resultSet = this.preparedStatement.executeQuery();
             while(this.resultSet.next()){
                 UserRole userRole = new UserRole();
-                userRole.setId(this.resultSet.getInt("id"));
+
                 userRole.getUser().setId(this.resultSet.getInt("user_id"));
-                userRole.getRole().setId(this.resultSet.getInt("role_id"));
-                userRole.setCreatedAt(new java.util.Date(this.resultSet.getDate("created_at").getTime()));
+                userRole.getRole().setId(this.resultSet.getInt("roles_id"));
+                if(this.resultSet.getDate("created_at") != null){
+                    userRole.setCreatedAt(new java.util.Date(this.resultSet.getDate("created_at").getTime()));
+                }
+
                 list.add(userRole);
             }
 
@@ -131,15 +171,15 @@ public class UserRoleDao implements UserRoleInterface {
         return list;
     }
 
-    private final static String CREATE = "INSERT INTO `\" + TABLE_NAME + \"`(`user_id`,`role_id`) VALUES(?,?)";
+    private final static String CREATE = "INSERT INTO `user_has_roles`(`user_id`,`roles_id`) VALUES(?,?)";
 
-    private final static String UPDATE = "UPDATE `\" + TABLE_NAME + \"` SET `user_id`=?, `role_id`=? WHERE `id`=?";
+    private final static String UPDATE = "UPDATE `user_has_roles` SET `user_id`=?, `roles_id`=? WHERE `id`=?";
 
-    private final static String DELETE = "DELETE FROM `\" + TABLE_NAME + \"` WHERE `id`=?";
+    private final static String DELETE = "DELETE FROM `user_has_roles` WHERE `id`=?";
 
-    private final static String SELECT_BY_ID = "SELECT * FROM `\" + TABLE_NAME + \"` WHERE `id`=?";
+    private final static String SELECT_BY_ID = "SELECT * FROM `user_has_roles` WHERE `id`=?";
 
-    private final static String SELECT_BY_USER = "SELECT * FROM `\" + TABLE_NAME + \"` WHERE `user_id`=?";
+    private final static String SELECT_BY_USER = "SELECT * FROM `user_has_roles` WHERE `user_id`=?";
 
-    private final static String SELECT_BY_ROLE = "SELECT * FROM `\" + TABLE_NAME + \"` WHERE `role_id`=?";
+    private final static String SELECT_BY_ROLE = "SELECT * FROM `user_has_roles` WHERE `roles_id`=?";
 }

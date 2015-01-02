@@ -19,7 +19,7 @@ import java.sql.SQLException;
  * @author rakateja on 12/6/14.
  */
 @WebServlet("/user")
-public class UserController extends HttpServlet{
+public class UserController extends AbstractController{
 
     private Gson gson;
     private String exMessage;
@@ -30,27 +30,24 @@ public class UserController extends HttpServlet{
         this.daoFactory = new DaoFactory();
     }
 
-
+    /**
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     */
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void doGet(HttpServletRequest request, HttpServletResponse response){
+        this.setRequestResponse(request, response);
+
         String idUser = request.getParameter("id");
-        String json;
         try {
             this.daoFactory.open();
             UserDaoInterface userDao = this.daoFactory.getUserDao();
 
             if(idUser != null){
-                json = this.gson.toJson(userDao.findById(Integer.parseInt(idUser)));
+                this.responseJson(userDao.findById(Integer.parseInt(idUser)));
             }else {
-                json = this.gson.toJson(userDao.findAll());
-            }
-
-            try {
-                PrintWriter writer = response.getWriter();
-                writer.write(json);
-                writer.flush();
-            } catch (IOException e) {
-
+                this.responseJson(userDao.findAll());
             }
 
         } catch (InstantiationException e) {
@@ -62,71 +59,79 @@ public class UserController extends HttpServlet{
         }
     }
 
+    /**
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     */
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response){
-        try{
+        this.setRequestResponse(request, response);
 
-            BufferedReader reader = request.getReader();
-            StringBuilder builder = new StringBuilder();
-            String aux;
+        User user = this.gson.fromJson(this.getInputBodyContent(), User.class);
 
-            while((aux = reader.readLine()) != null){
-                builder.append(aux);
-            }
+        try {
+            this.daoFactory.open();
+            UserDaoInterface userDao = this.daoFactory.getUserDao();
+            int id = userDao.add(user);
+            this.responseJson(userDao.findById(id));
 
-            User user = this.gson.fromJson(builder.toString(), User.class);
-
-            try {
-                this.daoFactory.open();
-                UserDaoInterface userDao = this.daoFactory.getUserDao();
-                int id = userDao.add(user);
-
-                System.out.println("id = "+id);
-                String json = gson.toJson(userDao.findById(id));
-
-                PrintWriter writer = response.getWriter();
-                writer.write(json);
-                writer.flush();
-
-            } catch (InstantiationException e) {
-                exMessage += e.getMessage();
-            } catch (IllegalAccessException e) {
-                exMessage += e.getMessage();
-            } catch (SQLException e) {
-                exMessage += e.getMessage();
-            } catch(Exception e){
-                exMessage += e.getMessage();
-            }
-
-        }catch(IOException ex){
-
+        } catch (InstantiationException e) {
+            exMessage += e.getMessage();
+        } catch (IllegalAccessException e) {
+            exMessage += e.getMessage();
+        } catch (SQLException e) {
+            exMessage += e.getMessage();
         }
     }
 
-    public void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        String id = request.getParameter("id");
+    /**
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    public void doPut(HttpServletRequest request, HttpServletResponse response){
+        this.setRequestResponse(request, response);
+
+        String id = this.getRequest().getParameter("id");
+        if(id != null){
+            try {
+                User user = this.gson.fromJson(this.getInputBodyContent(), User.class);
+                user.setId(Integer.parseInt(id));
+
+                this.daoFactory.open();
+                UserDaoInterface userDao = this.daoFactory.getUserDao();
+                userDao.update(user);
+                this.responseJson(userDao.findById(user.getId()));
+
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     *
+     * @param request HttpServletRequest
+     * @param response HttpServletResponse
+     */
+    @Override
+    public void doDelete(HttpServletRequest request, HttpServletResponse response) {
+        this.setRequestResponse(request, response);
+        String id = this.getRequest().getParameter("id");
         if(id != null){
             try {
                 this.daoFactory.open();
+
                 UserDaoInterface userDao = this.daoFactory.getUserDao();
+                userDao.delete(Integer.parseInt(id));
+                this.responseJson(null);
 
-                BufferedReader reader = request.getReader();
-                StringBuilder builder = new StringBuilder();
-                String aux;
-
-                while((aux = reader.readLine()) != null){
-                    builder.append(aux);
-                }
-                User user = this.gson.fromJson(builder.toString(), User.class);
-
-                user.setId(Integer.parseInt(id));
-                userDao.update(user);
-
-                String json = this.gson.toJson(userDao.findById(user.getId()));
-                PrintWriter writer = response.getWriter();
-                writer.write(json);
-                writer.flush();
-
+                this.daoFactory.close();
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -134,10 +139,9 @@ public class UserController extends HttpServlet{
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
+        }else{
+
         }
-    }
-
-    public void doDelete(HttpServletRequest request, HttpServletResponse response){
-
     }
 }

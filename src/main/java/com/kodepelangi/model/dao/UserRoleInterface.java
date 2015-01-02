@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface UserRoleInterface {
 
-    static final String TABLE_NAME = "user_has_role";
+    static final String TABLE_NAME = "user_has_roles";
 
     public int create(UserRole userRole);
 

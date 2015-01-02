@@ -22,7 +22,7 @@ public class RoleDao implements RoleInterface {
 
     /**
      *
-     * @param role
+     * @param role Role
      * @return
      */
     @Override
@@ -86,7 +86,7 @@ public class RoleDao implements RoleInterface {
 
     /**
      *
-     * @param id
+     * @param id int
      * @return
      */
     @Override

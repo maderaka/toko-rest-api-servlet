@@ -1,5 +1,7 @@
 package com.kodepelangi;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.kodepelangi.app.DaoFactory;
 import com.kodepelangi.entity.User;
 import com.kodepelangi.entity.UserRole;
@@ -18,7 +20,7 @@ import java.util.List;
  */
 
 @WebServlet(
-        name = "RoleServletController",
+        name = "UserRoleController",
         description = "Role endpoint",
         urlPatterns = {"/user/role"}
 )
@@ -37,7 +39,7 @@ public class UserRoleController extends AbstractController {
             this.daoFactory.open();
             this.userRoleDao = this.daoFactory.getUserRoleDao();
 
-            if(id!= null){
+            if(id== null){
                 List<UserRole> list =this.userRoleDao.findByUser(Integer.parseInt(user));
                 this.responseJson(list);
             }else{
@@ -58,6 +60,32 @@ public class UserRoleController extends AbstractController {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) {
         this.setRequestResponse(request, response);
+        String user = this.getRequest().getParameter("user");
+
+        String input = this.getInputBodyContent();
+        JsonObject jsonObject = (JsonObject) this.getGson().fromJson(input,Object.class);
+
+        UserRole userRole = new UserRole();
+        userRole.getUser().setId(Integer.parseInt(user));
+        userRole.getRole().setId(jsonObject.get("role_id").getAsInt());
+
+        System.out.println("role id = "+userRole.getRole().getId());
+
+        try {
+            this.daoFactory.open();
+            this.userRoleDao = this.daoFactory.getUserRoleDao();
+            int id = this.userRoleDao.create(userRole);
+
+            this.responseJson(this.userRoleDao.findById(id));
+            this.daoFactory.close();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
