@@ -94,4 +94,12 @@ public class UserAddress {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 }
