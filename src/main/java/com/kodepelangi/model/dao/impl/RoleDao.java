@@ -1,7 +1,7 @@
 package com.kodepelangi.model.dao.impl;
 
 import com.kodepelangi.entity.Role;
-import com.kodepelangi.model.dao.RoleInterface;
+import com.kodepelangi.model.dao.AbstractDaoInterface;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,7 +12,8 @@ import java.util.logging.Logger;
 /**
  * @author Raka Teja <rakatejaa@gmail.com>
  */
-public class RoleDao implements RoleInterface {
+public class RoleDao implements AbstractDaoInterface<Role> {
+
     private PreparedStatement preparedStatement;
     private Connection conn;
     private ResultSet resultSet;
@@ -26,7 +27,7 @@ public class RoleDao implements RoleInterface {
      * @return
      */
     @Override
-    public int add(Role role) {
+    public int create(Role role) {
         int lastInsertedId = 0;
         try {
             this.preparedStatement = this.conn.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
@@ -129,6 +130,11 @@ public class RoleDao implements RoleInterface {
             Logger.getLogger(UserDao.class.getName()).log(Level.SEVERE, null, e);
         }
 
+        return list;
+    }
+
+    public List<Role> findByUser(){
+        List<Role> list = new ArrayList<>();
         return list;
     }
 

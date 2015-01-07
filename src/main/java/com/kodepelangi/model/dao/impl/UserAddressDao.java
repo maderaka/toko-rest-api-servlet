@@ -1,8 +1,7 @@
 package com.kodepelangi.model.dao.impl;
 
-import com.kodepelangi.entity.User;
 import com.kodepelangi.entity.UserAddress;
-import com.kodepelangi.model.dao.UserAddressInterface;
+import com.kodepelangi.model.dao.UserAddressDaoInterface;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.logging.Logger;
 /**
  * @author rakateja on 12/7/14.
  */
-public class UserAddressDao implements UserAddressInterface {
+public class UserAddressDao implements UserAddressDaoInterface {
 
     private Connection conn;
     private ResultSet resultSet;
@@ -118,6 +117,11 @@ public class UserAddressDao implements UserAddressInterface {
             Logger.getLogger(UserAddressDao.class.getName()).log(Level.SEVERE, null, e);
         }
         return userAddress;
+    }
+
+    @Override
+    public List<UserAddress> findAll() {
+        return null;
     }
 
     @Override

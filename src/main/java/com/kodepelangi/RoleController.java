@@ -2,11 +2,9 @@ package com.kodepelangi;
 
 import com.kodepelangi.app.DaoFactory;
 import com.kodepelangi.entity.Role;
-import com.kodepelangi.model.dao.RoleInterface;
+import com.kodepelangi.model.dao.AbstractDaoInterface;
 
-import javax.management.relation.RoleInfoNotFoundException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
@@ -24,7 +22,7 @@ import java.util.List;
 public class RoleController extends AbstractController{
 
     DaoFactory daoFactory;
-    RoleInterface roleInterface;
+    AbstractDaoInterface<Role> roleInterface;
     public RoleController(){
         this.daoFactory = new DaoFactory();
     }
@@ -71,7 +69,7 @@ public class RoleController extends AbstractController{
         try{
             this.daoFactory.open();
             this.roleInterface = this.daoFactory.getRoleDao();
-            int id = this.roleInterface.add(role);
+            int id = this.roleInterface.create(role);
 
             Role r = this.roleInterface.findById(id);
             this.responseJson(r);

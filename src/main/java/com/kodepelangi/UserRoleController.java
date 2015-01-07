@@ -1,18 +1,14 @@
 package com.kodepelangi;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.kodepelangi.app.DaoFactory;
-import com.kodepelangi.entity.User;
 import com.kodepelangi.entity.UserRole;
-import com.kodepelangi.model.dao.UserRoleInterface;
-import com.kodepelangi.model.dao.impl.UserRoleDao;
+import com.kodepelangi.model.dao.UserRoleDaoInterface;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +22,7 @@ import java.util.List;
 )
 public class UserRoleController extends AbstractController {
     private DaoFactory daoFactory;
-    private UserRoleInterface userRoleDao;
+    private UserRoleDaoInterface userRoleDao;
     public UserRoleController(){
         this.daoFactory = new DaoFactory();
     }

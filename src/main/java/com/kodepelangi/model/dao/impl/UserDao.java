@@ -24,7 +24,7 @@ public class UserDao implements UserDaoInterface {
     }
 
     @Override
-    public int add(User user) {
+    public int create(User user) {
         int lastInsertedId = 0;
         try {
             this.preparedStatement = this.conn.prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);

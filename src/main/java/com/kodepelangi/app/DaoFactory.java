@@ -1,8 +1,8 @@
 package com.kodepelangi.app;
 
-import com.kodepelangi.model.dao.RoleInterface;
+import com.kodepelangi.model.dao.AbstractDaoInterface;
 import com.kodepelangi.model.dao.UserDaoInterface;
-import com.kodepelangi.model.dao.UserRoleInterface;
+import com.kodepelangi.model.dao.UserRoleDaoInterface;
 import com.kodepelangi.model.dao.impl.RoleDao;
 import com.kodepelangi.model.dao.impl.UserDao;
 import com.kodepelangi.model.dao.impl.UserRoleDao;
@@ -56,8 +56,8 @@ public class DaoFactory {
      *
      * @return UserDaoInterface
      */
-    public RoleInterface getRoleDao(){
-        RoleInterface roleDao = new RoleDao(this.conn);
+    public AbstractDaoInterface getRoleDao(){
+        AbstractDaoInterface roleDao = new RoleDao(this.conn);
         return roleDao;
     }
 
@@ -65,8 +65,8 @@ public class DaoFactory {
      *
      * @return UserRoleInterface
      */
-    public UserRoleInterface getUserRoleDao(){
-        UserRoleInterface userRoleDao = new UserRoleDao(this.conn);
+    public UserRoleDaoInterface getUserRoleDao(){
+        UserRoleDaoInterface userRoleDao = new UserRoleDao(this.conn);
         return userRoleDao;
     }
 }

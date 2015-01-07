@@ -1,7 +1,7 @@
 package com.kodepelangi.model.dao.impl;
 
 import com.kodepelangi.entity.UserRole;
-import com.kodepelangi.model.dao.UserRoleInterface;
+import com.kodepelangi.model.dao.UserRoleDaoInterface;
 
 import java.sql.*;
 import java.util.*;
@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * @author Raka Teja<rakatejaa@gmail.com>
  */
-public class UserRoleDao implements UserRoleInterface {
+public class UserRoleDao implements UserRoleDaoInterface {
 
     private Connection conn;
     private PreparedStatement preparedStatement;
@@ -111,6 +111,11 @@ public class UserRoleDao implements UserRoleInterface {
         }
 
         return uR;
+    }
+
+    @Override
+    public List<UserRole> findAll() {
+        return null;
     }
 
     /**
