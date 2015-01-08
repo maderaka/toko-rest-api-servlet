@@ -1,6 +1,7 @@
 package com.kodepelangi;
 
 import com.google.gson.Gson;
+import com.kodepelangi.app.DaoFactory;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +18,11 @@ abstract class AbstractController extends HttpServlet{
     private HttpServletRequest request;
     private HttpServletResponse response;
     private Gson gson;
+    private DaoFactory daoFactory;
 
     public AbstractController(){
         this.setGson(new Gson());
+        this.setDaoFactory(new DaoFactory());
     }
 
     private void buildInputBodyContent(){
@@ -94,4 +97,12 @@ abstract class AbstractController extends HttpServlet{
     public abstract void doPut(HttpServletRequest request, HttpServletResponse response);
 
     public abstract void doDelete(HttpServletRequest request, HttpServletResponse response);
+
+    public DaoFactory getDaoFactory() {
+        return daoFactory;
+    }
+
+    public void setDaoFactory(DaoFactory daoFactory) {
+        this.daoFactory = daoFactory;
+    }
 }

@@ -69,7 +69,7 @@ public class UserController extends AbstractController{
         try {
             this.daoFactory.open();
             UserDaoInterface userDao = this.daoFactory.getUserDao();
-            int id = userDao.add(user);
+            int id = userDao.create(user);
             this.responseJson(userDao.findById(id));
 
         } catch (InstantiationException e) {
