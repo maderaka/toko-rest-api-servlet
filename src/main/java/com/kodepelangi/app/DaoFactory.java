@@ -3,6 +3,7 @@ package com.kodepelangi.app;
 import com.kodepelangi.model.dao.AbstractDaoInterface;
 import com.kodepelangi.model.dao.UserDaoInterface;
 import com.kodepelangi.model.dao.UserRoleDaoInterface;
+import com.kodepelangi.model.dao.impl.CategoryDao;
 import com.kodepelangi.model.dao.impl.RoleDao;
 import com.kodepelangi.model.dao.impl.UserDao;
 import com.kodepelangi.model.dao.impl.UserRoleDao;
@@ -68,5 +69,10 @@ public class DaoFactory {
     public UserRoleDaoInterface getUserRoleDao(){
         UserRoleDaoInterface userRoleDao = new UserRoleDao(this.conn);
         return userRoleDao;
+    }
+
+    public AbstractDaoInterface getCategoryDao(){
+        AbstractDaoInterface categoryDao = new CategoryDao(this.conn);
+        return categoryDao;
     }
 }
