@@ -10,8 +10,6 @@ Aplikasi E-commerce ini terdiri dari beberapa modules(untuk sementara), yaitu :
 * Product (toko-rest-api-product)
 * Service (toko-rest-api-service)
 
-###Build dan Run
----
 ###Teknology dan Library
 ####Library
 * Google Gson
