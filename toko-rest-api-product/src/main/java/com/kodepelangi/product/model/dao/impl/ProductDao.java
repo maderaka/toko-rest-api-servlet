@@ -25,7 +25,7 @@ public class ProductDao extends AbstractDao implements ProductDaoInterface {
         try {
             this.query = "INSERT INTO `product`(`code`,`title`,`price`,`desc`,`status`,`brand_id`,`category_id`) VALUES(?,?,?,?,?,?,?)";
             this.preparedStatement = this.conn.prepareStatement(this.query, Statement.RETURN_GENERATED_KEYS);
-            lastIdInserted = this.add(this.preparedStatement);
+            return this.add();
         } catch (SQLException e) {
             e.printStackTrace();
         }

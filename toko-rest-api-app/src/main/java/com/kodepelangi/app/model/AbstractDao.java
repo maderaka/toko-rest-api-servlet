@@ -20,9 +20,8 @@ public abstract class AbstractDao {
         this.conn = connection;
     }
 
-    protected int add(PreparedStatement ps){
+    protected int add(){
         try {
-            this.preparedStatement = ps;
             if(this.preparedStatement.executeUpdate()==1){
                 this.resultSet = this.preparedStatement.getGeneratedKeys();
                 if(this.resultSet.next()){
