@@ -14,18 +14,15 @@ public abstract class AbstractDao {
 
     protected ResultSet resultSet;
 
+    protected String query;
+
     public AbstractDao(Connection connection){
         this.conn = connection;
     }
 
-    protected int add(String query, String[] params){
+    protected int add(PreparedStatement ps){
         try {
-            this.preparedStatement = this.conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-
-            for (int i=1;i<params.length+1;i++){
-                this.preparedStatement.setString(i, params[i - 1]);
-            }
-
+            this.preparedStatement = ps;
             if(this.preparedStatement.executeUpdate()==1){
                 this.resultSet = this.preparedStatement.getGeneratedKeys();
                 if(this.resultSet.next()){
@@ -36,6 +33,38 @@ public abstract class AbstractDao {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    protected boolean delete(int id){
+        try {
+            this.preparedStatement = this.conn.prepareStatement(this.query);
+            this.preparedStatement.setInt(1, id);
+            return this.preparedStatement.executeUpdate() ==1;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    protected ResultSet selectById(int id){
+        try {
+            this.preparedStatement = this.conn.prepareStatement(this.query);
+            this.preparedStatement.setInt(1,id);
+            this.resultSet = this.preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return this.resultSet;
+    }
+
+    protected ResultSet selectMany(){
+        try {
+            this.preparedStatement = this.conn.prepareStatement(this.query);
+            this.resultSet = this.preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return this.resultSet;
     }
 
 }
